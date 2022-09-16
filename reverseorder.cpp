@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <climits>
 #include "reverseorder.h"
+#include <vector>
 
 void reverse_order(std::string date1, std::string date2) {
 	std::ifstream fin("Current_Reservoir_Levels.tsv");
@@ -15,7 +16,7 @@ void reverse_order(std::string date1, std::string date2) {
     getline(fin, junk);
 
     double eastSt, eastEl, westSt, westEl;
-    bool start = false
+    bool start = false;
     std::vector<std::string> arrDate;
     std::vector<double> arrWestEl;
 
@@ -30,11 +31,20 @@ void reverse_order(std::string date1, std::string date2) {
             start = true;
         }
 
-        if (date2.compare(date)) 
+        if (start) {
+            arrDate.push_back(date);
+            arrWestEl.push_back(westEl);
+        }
+
+        if (date2.compare(date) == 0) { 
             start = false;
         }
     }
 
-
     fin.close();
+
+    for (int i = arrDate.size() - 1; i >= 0; i--) {
+        std::cout << arrDate.at(i) << "    " << arrWestEl.at(i) << " ft" << std::endl;
+    }
+
 }
